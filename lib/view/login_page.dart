@@ -15,17 +15,21 @@ class Login extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              BlocBuilder<CounterCubit,CounterState>(
-                builder: (context, state) {
-                  if(state.counterValue == 5){
-                    return Text('wow its 5 buddy ${state.counterValue}',);
-                  }else if(state.counterValue.isEven){
-                    return Text("it is even ${state.counterValue}");
-                  }else{
-                    return Text("its odd${state.counterValue}");
-                  }
-                },
-              ),
+              BlocConsumer<CounterCubit,CounterState>(builder: (context,state){
+                if(state.counterValue == 5){
+                  return Text('wow its 5 buddy ${state.counterValue}',);
+                }else if(state.counterValue.isEven){
+                  return Text("it is even ${state.counterValue}");
+                }else{
+                  return Text("its odd${state.counterValue}");
+                }
+              }, listener: (context,state){
+                if(state.wasIncremented == true){
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text('incremented')));
+                }else if(state.wasIncremented==false){
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text('decremented')));
+                }
+              }),
               const SizedBox(height: 20,),
               FloatingActionButton(
                   heroTag: 1,
